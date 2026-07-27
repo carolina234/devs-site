@@ -231,10 +231,73 @@ document.getElementById("mensagemFinal").innerHTML=mensagem;
 
 }
 }
-notaQuiz = (acertos / perguntas.length) * 10;
 
-quizFinalizado = true;
+// ==========================
+// FORMULÁRIO
+// ==========================
 
+const formulario = document.getElementById("formulario");
+
+formulario.addEventListener("submit", async (event) => {
+
+    event.preventDefault();
+
+    if (!quizFinalizado) {
+        alert("⚠️ Você precisa concluir o quiz antes de enviar a avaliação.");
+        return;
+    }
+
+    const dados = {
+        nome: document.getElementById("nome").value,
+        email: document.getElementById("email").value,
+        curso: document.getElementById("curso").value,
+        ia: document.getElementById("ia").value,
+        quiz: acertos,
+        nota: notaQuiz.toFixed(1),
+        avaliacao: document.getElementById("nota").value,
+        comentario: document.getElementById("comentario").value
+    };
+
+    try {
+
+        const resposta = await fetch(
+            "https://script.google.com/macros/s/AKfycbwiEnyiaVckYM5-_EMPnRWnZr7t_XpIOMwZzugK0G9mSWMYve5bvlcawaq6_8GcNFoG/exec",
+            {
+                method: "POST",
+                headers: {
+             "Content-Type": "application/json"
+                  },
+                body: JSON.stringify(dados)
+            }
+        );
+
+        if (!resposta.ok) {
+            throw new Error("Erro HTTP: " + resposta.status);
+        }
+
+        alert("✅ Avaliação enviada com sucesso!");
+
+        formulario.reset();
+
+        indice = 0;
+        acertos = 0;
+        notaQuiz = 0;
+        quizFinalizado = false;
+
+        document.getElementById("resultado").style.display = "none";
+        document.getElementById("quiz-container").style.display = "block";
+
+        carregarPergunta();
+
+    } catch (erro) {
+
+        console.error(erro);
+
+        alert("Erro ao enviar: " + erro.message);
+
+    }
+
+});
 // ==========================
 // ANIMAÇÃO AO ROLAR A PÁGINA
 // ==========================
@@ -327,6 +390,11 @@ window.addEventListener("load", ()=>{
 
     setTimeout(()=>{
 
+        alert("👋 Bem-vindo ao projeto 'Inteligência Artificial para Devs'!\n\nExplore as ferramentas, copie os prompts e teste seus conhecimentos no quiz.");
+
+    },800);
+
+});
         alert("👋 Bem-vindo ao projeto 'Inteligência Artificial para Devs'!\n\nExplore as ferramentas, copie os prompts e teste seus conhecimentos no quiz.");
 
     },800);
