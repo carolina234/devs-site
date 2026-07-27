@@ -1,98 +1,36 @@
-const URL =
-"https://carolina234.github.io/devs-site/";
+const URL = "https://script.google.com/macros/s/AKfycbwiEnyiaVckYM5-_EMPnRWnZr7t_XpIOMwZzugK0G9mSWMYve5bvlcawaq6_8GcNFoG/exec";
 
 fetch(URL)
+  .then(res => res.json())
+  .then(dados => {
 
-.then(r=>r.json())
+    console.log(dados);
 
-.then(dados=>{
+    // Total de participantes
+    document.getElementById("participantes").innerHTML = dados.length;
 
-document.getElementById("participantes").innerHTML=dados.length;
+    // Média das notas
+    const mediaNota =
+      dados.reduce((s, d) => s + d.nota, 0) / dados.length;
 
-const mediaNota =
-dados.reduce((s,d)=>s+d.nota,0)/dados.length;
+    document.getElementById("mediaNota").innerHTML =
+      mediaNota.toFixed(1);
 
-document.getElementById("mediaNota").innerHTML=
-mediaNota.toFixed(1);
+    // Média da avaliação
+    const mediaAvaliacao =
+      dados.reduce((s, d) => s + d.avaliacao, 0) / dados.length;
 
-const mediaAval =
-dados.reduce((s,d)=>s+d.avaliacao,0)/dados.length;
+    document.getElementById("mediaAvaliacao").innerHTML =
+      mediaAvaliacao.toFixed(1);
 
-document.getElementById("mediaAvaliacao").innerHTML=
-mediaAval.toFixed(1);
+    // Porcentagem de quem já usava IA
+    const usamIA =
+      dados.filter(d => d.ia === "Sim").length;
 
-const usamIA=
-dados.filter(d=>d.ia=="Sim").length;
+    document.getElementById("porcentagemIA").innerHTML =
+      ((usamIA / dados.length) * 100).toFixed(0) + "%";
 
-document.getElementById("porcentagemIA").innerHTML=
-((usamIA/dados.length)*100).toFixed(0)+"%";
-
-const cursos={};
-
-dados.forEach(d=>{
-
-cursos[d.curso]=(cursos[d.curso]||0)+1;
-
-});
-
-new Chart(
-
-document.getElementById("graficoCursos"),
-
-{
-
-type:"bar",
-
-data:{
-
-labels:Object.keys(cursos),
-
-datasets:[{
-
-label:"Participantes",
-
-data:Object.values(cursos)
-
-}]
-
-}
-
-}
-
-);
-
-const notas={1:0,2:0,3:0,4:0,5:0,6:0,7:0,8:0,9:0,10:0};
-
-dados.forEach(d=>{
-
-const n=Math.round(d.nota);
-
-notas[n]++;
-
-});
-
-new Chart(
-
-document.getElementById("graficoNotas"),
-
-{
-
-type:"pie",
-
-data:{
-
-labels:Object.keys(notas),
-
-datasets:[{
-
-data:Object.values(notas)
-
-}]
-
-}
-
-}
-
-);
-
-});
+  })
+  .catch(erro => {
+    console.error("Erro ao carregar dashboard:", erro);
+  });
