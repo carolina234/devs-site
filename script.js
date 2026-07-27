@@ -261,15 +261,12 @@ formulario.addEventListener("submit", async (event) => {
     try {
 
         const resposta = await fetch(
-            "https://script.google.com/macros/s/AKfycbwiEnyiaVckYM5-_EMPnRWnZr7t_XpIOMwZzugK0G9mSWMYve5bvlcawaq6_8GcNFoG/exec",
-            {
-                method: "POST",
-                headers: {
-             "Content-Type": "application/json"
-                  },
-                body: JSON.stringify(dados)
-            }
-        );
+    "https://script.google.com/macros/s/AKfycbwiEnyiaVckYM5-_EMPnRWnZr7t_XpIOMwZzugK0G9mSWMYve5bvlcawaq6_8GcNFoG/exec",
+    {
+        method: "POST",
+        body: JSON.stringify(dados)
+    }
+);
 
         if (!resposta.ok) {
             throw new Error("Erro HTTP: " + resposta.status);
