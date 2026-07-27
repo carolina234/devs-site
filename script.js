@@ -395,8 +395,3 @@ window.addEventListener("load", ()=>{
     },800);
 
 });
-        alert("👋 Bem-vindo ao projeto 'Inteligência Artificial para Devs'!\n\nExplore as ferramentas, copie os prompts e teste seus conhecimentos no quiz.");
-
-    },800);
-
-});
